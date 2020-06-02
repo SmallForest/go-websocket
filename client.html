@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>client</title>
+
+
+
+</head>
+<body>
+
+<div id="sse">
+    <a href="javascript:WebSocketTest()">运行 WebSocket</a>
+    <div>
+        <div>接收到的数据</div>
+        <div id="show"></div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+    function WebSocketTest()
+    {
+        if ("WebSocket" in window)
+        {
+            // 打开一个 web socket
+            var ws = new WebSocket("ws://localhost:7777/ws");
+
+            ws.onopen = function()
+            {
+                // Web Socket 已连接上，使用 send() 方法发送数据
+                ws.send("发送数据到服务器！");
+            };
+
+            //数据已接收...
+            ws.onmessage = function (evt)
+            {
+                var received_msg = evt.data;
+                $('#show').append(received_msg+'<br/>')
+            };
+
+            //服务端停止服务
+            ws.onclose = function()
+            {
+                // 关闭 websocket
+                alert("连接已关闭...");
+            };
+        }
+
+        else
+        {
+            // 浏览器不支持 WebSocket
+            alert("您的浏览器不支持 WebSocket!");
+        }
+    }
+</script>
+</body>
+</html>
